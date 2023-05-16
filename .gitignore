@@ -27,7 +27,3 @@ bin/
 # macos
 
 *.DS_Store
-
-# fabric
-
-run/

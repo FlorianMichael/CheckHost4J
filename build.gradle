@@ -1,0 +1,17 @@
+plugins {
+    id "java"
+}
+
+archivesBaseName = "CheckHost4J"
+version = "1.0.0"
+group = "de.florianmichael"
+
+repositories {
+}
+
+dependencies {
+}
+
+jar {
+    from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+}
