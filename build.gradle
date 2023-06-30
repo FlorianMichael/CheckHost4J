@@ -1,9 +1,10 @@
 plugins {
     id "java"
+    id "maven-publish"
 }
 
 archivesBaseName = "CheckHost4J"
-version = "1.0.0"
+version = "1.0.1"
 group = "de.florianmichael"
 
 repositories {
@@ -16,6 +17,7 @@ dependencies {
 
 java {
     withSourcesJar()
+    withJavadocJar()
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -23,4 +25,51 @@ java {
 
 jar {
     from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "reposilite"
+            def releasesUrl = "https://maven.lenni0451.net/releases"
+            def snapshotsUrl = "https://maven.lenni0451.net/snapshots"
+            url = project.version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.archivesBaseName
+            groupId = project.group
+            version = project.version
+
+            from components.java
+
+            pom {
+                name = artifactId
+                description = "Java implementation of the check-host.net API"
+                url = "https://github.com/FlorianMichael/CheckHost4J"
+                licenses {
+                    license {
+                        name = "Apache-2.0 license"
+                        url = "https://github.com/FlorianMichael/CheckHost4J/blob/main/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "FlorianMichael"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/FlorianMichael/CheckHost4J.git"
+                    developerConnection = "scm:git:ssh://github.com/FlorianMichael/CheckHost4J.git"
+                    url = "github.com/FlorianMichael/CheckHost4J"
+                }
+            }
+        }
+    }
 }
