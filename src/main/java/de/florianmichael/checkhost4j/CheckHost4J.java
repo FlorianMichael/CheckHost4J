@@ -45,30 +45,60 @@ public class CheckHost4J {
         this.requester = requester;
     }
 
+    /**
+     * @param host     The host to check (e.g. google.com)
+     * @param maxNodes The maximum amount of nodes to use
+     * @return A {@link ResultNode} with the results
+     * @throws Throwable If an error occurs
+     */
     public ResultNode<PingResult> ping(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.PING, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.PING, entry.getKey(), entry.getValue());
     }
 
+    /**
+     * @param host     The host to check (e.g. google.com)
+     * @param maxNodes The maximum amount of nodes to use
+     * @return A {@link ResultNode} with the results
+     * @throws Throwable If an error occurs
+     */
     public ResultNode<HTTPResult> http(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.HTTP, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.HTTP, entry.getKey(), entry.getValue());
     }
 
+    /**
+     * @param host     The host to check (e.g. google.com)
+     * @param maxNodes The maximum amount of nodes to use
+     * @return A {@link ResultNode} with the results
+     * @throws Throwable If an error occurs
+     */
     public ResultNode<TCPResult> tcpPort(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.TCP, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.TCP, entry.getKey(), entry.getValue());
     }
 
+    /**
+     * @param host     The host to check (e.g. google.com)
+     * @param maxNodes The maximum amount of nodes to use
+     * @return A {@link ResultNode} with the results
+     * @throws Throwable If an error occurs
+     */
     public ResultNode<TCPResult> udpPort(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.UDP, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.UDP, entry.getKey(), entry.getValue());
     }
 
+    /**
+     * @param host     The host to check (e.g. google.com)
+     * @param maxNodes The maximum amount of nodes to use
+     * @return A {@link ResultNode} with the results
+     * @throws Throwable If an error occurs
+     */
     public ResultNode<TCPResult> dns(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.DNS, host, maxNodes);
 

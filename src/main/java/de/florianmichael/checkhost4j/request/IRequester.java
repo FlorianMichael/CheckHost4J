@@ -19,7 +19,17 @@ package de.florianmichael.checkhost4j.request;
 
 import java.net.URI;
 
+/**
+ * Interface for a requester
+ */
 public interface IRequester {
 
+    /**
+     * Get the content of the given URI
+     *
+     * @param target URI to get
+     * @return Content of the URI
+     * @throws Throwable If an error occurs
+     */
     String get(final URI target) throws Throwable;
 }
