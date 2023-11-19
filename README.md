@@ -43,7 +43,7 @@ and `CheckHost4J#dns`
 to get a `ResultNode<T>` where T is the result type of the request (e.g. `PingResult`, `TCPResult`).
 
 ```java
-final ResultNode<PingResult> pingResult=checkHost.ping("example.com", 80 /* max nodes */);
+final ResultNode<PingResult> pingResult = checkHost.ping("example.com", 80 /* max nodes */);
 ```
 
 After you got the `ResultNode<T>` you can use the `tickResults()` to update the `getResults()` list.
