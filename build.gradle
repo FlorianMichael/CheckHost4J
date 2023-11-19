@@ -1,11 +1,14 @@
 plugins {
     id "java"
     id "maven-publish"
+    id "signing"
 }
 
-archivesBaseName = "CheckHost4J"
-version = "1.1.0-SNAPSHOT"
-group = "de.florianmichael"
+base {
+    archivesName = project.maven_name
+    version = project.maven_version
+    group = project.maven_group
+}
 
 repositories {
     mavenCentral()
@@ -24,15 +27,29 @@ java {
 }
 
 jar {
-    from("LICENSE") { rename { "${it}_${project.archivesBaseName}" } }
+    // Rename the project's license file to LICENSE_<project_name> to avoid conflicts
+    from("LICENSE") {
+        rename {
+            "${it}_${project.archivesBaseName}"
+        }
+    }
 }
 
 publishing {
     repositories {
         maven {
             name = "reposilite"
-            def releasesUrl = "https://maven.lenni0451.net/releases"
-            def snapshotsUrl = "https://maven.lenni0451.net/snapshots"
+            url = "https://maven.lenni0451.net/" + (project.version.endsWith("SNAPSHOT") ? "snapshots" : "releases")
+
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+        maven {
+            name = "ossrh"
+            def releasesUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
             url = project.version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
 
             credentials(PasswordCredentials)
@@ -72,4 +89,14 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    setRequired false
+    sign configurations.archives
+    sign publishing.publications.maven
+}
+
+project.tasks.withType(PublishToMavenRepository).forEach {
+    it.dependsOn(project.tasks.withType(Sign))
 }
