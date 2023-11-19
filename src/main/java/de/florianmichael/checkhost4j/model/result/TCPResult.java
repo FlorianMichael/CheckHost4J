@@ -2,11 +2,11 @@
  * This file is part of CheckHost4J - https://github.com/FlorianMichael/CheckHost4J
  * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,19 @@
  * limitations under the License.
  */
 
-package de.florianmichael.checkhost4j.results;
+package de.florianmichael.checkhost4j.model.result;
 
-public record TCPResult(double ping, String address, String error) {
+public class TCPResult {
+
+	public final double ping;
+	public final String address;
+	public final String error;
+
+	public TCPResult(double ping, String address, String error) {
+		this.ping = ping;
+		this.address = address;
+		this.error = error;
+	}
 
 	public boolean isSuccessful() {
 		return error == null;

@@ -20,36 +20,30 @@ This library requires you to have [Gson](https://mvnrepository.com/artifact/com.
 ## Example usage
 Here is an example of how to use the API
 ```java
-public class Test {
-    private static long time = System.currentTimeMillis();
+long time = System.currentTimeMillis();
+final ResultNode<PingResult> result = CheckHost4J.INSTANCE.ping("gommehd.net", 80);
+while (true) {
+    if ((System.currentTimeMillis() - time) >= 2500) { // 2.5 seconds passed since last update
+        System.out.println("Updating results...");
+        result.tickResults();
 
-    public static void main(String[] args) throws IOException {
-        final var field = CheckHostAPI.createPingRequest("<your ip>", 10);
-        while (true) {
-            if ((System.currentTimeMillis() - time) >= 2500) {
-                System.out.println("Updating");
-                field.update();
-
-                System.out.println("#####################################");
-                for (CHServer server : field.servers()) {
-                    final var result = field.getResult().get(server);
-
-                    System.out.println(server.name() + " | " + server.country());
-                    if (result != null) {
-                        for (String s : result.pingEntries().stream().map(pingEntry -> pingEntry.address() + "|" + pingEntry.ping()).toList()) {
-                            System.out.println(s);
-                        }
-                    } else {
-                        System.out.println("No result for this server");
-                    }
+        // Print current results
+        System.out.println("#####################################");
+        result.getResults().forEach((serverNode, pingResult) -> {
+            System.out.println(serverNode.name + " | " + serverNode.country + " | " + serverNode.ip + " | " + serverNode.asName);
+            if (pingResult != null) {
+                for (PingResult.PingEntry entry : pingResult.pingEntries) {
+                    System.out.println(entry.address + " | " + entry.ping);
                 }
-                System.out.println("#####################################");
-                time = System.currentTimeMillis();
+            } else {
+                System.out.println("No result for this server");
             }
-        }
+        });
+        System.out.println("#####################################");
+        time = System.currentTimeMillis();
     }
 }
 ```
 You can use these functions in the CheckHostAPI class:
-**createPingRequest, createTCPRequest, createUDPRequest, createHTTPRequest and createDNSRequest** <br>
+**ping, http, tcpPort, udpPort and dns** <br>
 The field you get you have to save, and then you can update it in a certain delay by calling the update method, keep in mind that this method will send an API request to CheckHost every time you call the create utils, an API request will also be sent automatically.

@@ -2,11 +2,11 @@
  * This file is part of CheckHost4J - https://github.com/FlorianMichael/CheckHost4J
  * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package de.florianmichael.checkhost4j.results;
+package de.florianmichael.checkhost4j.request;
 
-public record UDPResult(double timeout, double ping, String address, String error) {
+import java.net.URI;
 
-	public boolean isSuccessful() {
-		return error == null;
-	}
+public interface IRequester {
+
+    String get(final URI target) throws Throwable;
 }
