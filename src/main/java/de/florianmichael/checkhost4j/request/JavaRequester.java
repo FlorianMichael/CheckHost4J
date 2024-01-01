@@ -23,7 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 
 public class JavaRequester implements IRequester {
-    public final static JavaRequester INSTANCE = new JavaRequester("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0");
+
+    public static final JavaRequester INSTANCE = new JavaRequester("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0");
 
     private final String agent;
 
@@ -48,4 +49,5 @@ public class JavaRequester implements IRequester {
         connection.disconnect();
         return output.toString();
     }
+
 }

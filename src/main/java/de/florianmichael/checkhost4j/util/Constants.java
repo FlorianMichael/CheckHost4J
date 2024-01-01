@@ -26,9 +26,10 @@ import java.net.URI;
 import java.net.URLEncoder;
 
 public class Constants {
-    public final static Gson GSON = new Gson();
 
-    public final static URI ROOT_URL = URI.create("https://check-host.net");
+    public static final Gson GSON = new Gson();
+
+    public static final URI ROOT_URL = URI.create("https://check-host.net");
 
     public static URI getServers(final String type, final String target, final int maxNodes) throws UnsupportedEncodingException {
         return URI.create(ROOT_URL + "/check-" + type + "?host=" + URLEncoder.encode(target, "UTF-8") + "&max_nodes=" + maxNodes);
@@ -39,4 +40,5 @@ public class Constants {
 
         return GSON.fromJson(result, JsonObject.class);
     }
+
 }

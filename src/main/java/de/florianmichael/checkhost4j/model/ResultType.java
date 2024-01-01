@@ -229,4 +229,5 @@ public enum ResultType {
          */
         Map<ServerNode, T> perform(final String requestId, final IRequester requester, final List<ServerNode> nodes) throws Throwable;
     }
+
 }

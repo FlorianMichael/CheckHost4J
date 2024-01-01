@@ -34,4 +34,5 @@ public class HTTPResult {
 	public boolean isSuccessful() {
 		return status != null && status.equalsIgnoreCase("OK");
 	}
+
 }

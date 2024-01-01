@@ -18,6 +18,7 @@
 package de.florianmichael.checkhost4j.util;
 
 public class Pair<K, V> {
+
     private final K key;
     private final V value;
 
@@ -33,4 +34,5 @@ public class Pair<K, V> {
     public V getValue() {
         return value;
     }
+
 }

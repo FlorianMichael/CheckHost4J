@@ -20,6 +20,7 @@ package de.florianmichael.checkhost4j.model.result;
 import java.util.List;
 
 public class PingResult {
+
 	public final List<PingEntry> pingEntries;
 
 	public PingResult(List<PingEntry> pingEntries) {
@@ -46,4 +47,5 @@ public class PingResult {
 			return (status != null && status.equalsIgnoreCase("OK")) && ping >= 0;
 		}
 	}
+
 }

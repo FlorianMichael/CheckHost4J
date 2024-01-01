@@ -32,4 +32,5 @@ public class TCPResult {
 	public boolean isSuccessful() {
 		return error == null;
 	}
+
 }

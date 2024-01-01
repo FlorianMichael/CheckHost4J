@@ -32,4 +32,5 @@ public class DNSResult {
 	public boolean isSuccessful() {
 		return ttl >= 0;
 	}
+
 }

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ResultNode<T> {
+
     private final IRequester requester;
 
     private final ResultType type;
@@ -72,4 +73,5 @@ public class ResultNode<T> {
     public List<ServerNode> getNodes() {
         return nodes;
     }
+
 }

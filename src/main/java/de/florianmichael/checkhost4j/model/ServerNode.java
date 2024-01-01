@@ -18,6 +18,7 @@
 package de.florianmichael.checkhost4j.model;
 
 public class ServerNode {
+
     public final String name;
     public final String countryCode;
     public final String country;
@@ -33,4 +34,5 @@ public class ServerNode {
         this.ip = ip;
         this.asName = asName;
     }
+
 }

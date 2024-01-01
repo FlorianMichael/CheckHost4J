@@ -32,4 +32,5 @@ public interface IRequester {
      * @throws Throwable If an error occurs
      */
     String get(final URI target) throws Throwable;
+
 }

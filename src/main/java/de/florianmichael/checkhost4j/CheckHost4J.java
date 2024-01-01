@@ -37,7 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CheckHost4J {
-    public final static CheckHost4J INSTANCE = new CheckHost4J(JavaRequester.INSTANCE);
+
+    public static final CheckHost4J INSTANCE = new CheckHost4J(JavaRequester.INSTANCE);
 
     private final IRequester requester;
 
@@ -137,4 +138,5 @@ public class CheckHost4J {
 
         return new Pair<>(main.get("request_id").getAsString(), servers);
     }
+
 }
