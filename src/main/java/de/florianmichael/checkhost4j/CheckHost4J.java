@@ -23,9 +23,7 @@ import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.model.ResultNode;
 import de.florianmichael.checkhost4j.model.ServerNode;
 import de.florianmichael.checkhost4j.model.ResultType;
-import de.florianmichael.checkhost4j.model.result.HTTPResult;
-import de.florianmichael.checkhost4j.model.result.PingResult;
-import de.florianmichael.checkhost4j.model.result.TCPResult;
+import de.florianmichael.checkhost4j.model.result.*;
 import de.florianmichael.checkhost4j.request.IRequester;
 import de.florianmichael.checkhost4j.request.JavaRequester;
 import de.florianmichael.checkhost4j.util.Constants;
@@ -88,7 +86,7 @@ public class CheckHost4J {
      * @return A {@link ResultNode} with the results
      * @throws Throwable If an error occurs
      */
-    public ResultNode<TCPResult> udpPort(final String host, final int maxNodes) throws Throwable {
+    public ResultNode<UDPResult> udpPort(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.UDP, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.UDP, entry.getKey(), entry.getValue());
@@ -100,7 +98,7 @@ public class CheckHost4J {
      * @return A {@link ResultNode} with the results
      * @throws Throwable If an error occurs
      */
-    public ResultNode<TCPResult> dns(final String host, final int maxNodes) throws Throwable {
+    public ResultNode<DNSResult> dns(final String host, final int maxNodes) throws Throwable {
         final Pair<String, List<ServerNode>> entry = getServers(ResultType.DNS, host, maxNodes);
 
         return new ResultNode<>(requester, ResultType.DNS, entry.getKey(), entry.getValue());
