@@ -43,6 +43,18 @@ public class PingResult {
 		return pingEntries.stream().mapToDouble(entry -> entry.ping).max().orElse(-1);
 	}
 
+	public int getSuccessfulPings() {
+		return (int) pingEntries.stream().filter(PingEntry::isSuccessful).count();
+	}
+
+	public int getFailedPings() {
+		return (int) pingEntries.stream().filter(entry -> !entry.isSuccessful()).count();
+	}
+
+	public int getTotalPings() {
+		return pingEntries.size();
+	}
+
 	public static class PingEntry {
 
 		public final String status;
