@@ -31,6 +31,18 @@ public class PingResult {
 		return pingEntries != null && !pingEntries.isEmpty();
 	}
 
+	public double getLowestPing() {
+		return pingEntries.stream().mapToDouble(entry -> entry.ping).min().orElse(-1);
+	}
+
+	public double getAveragePing() {
+		return pingEntries.stream().mapToDouble(entry -> entry.ping).average().orElse(-1);
+	}
+
+	public double getHighestPing() {
+		return pingEntries.stream().mapToDouble(entry -> entry.ping).max().orElse(-1);
+	}
+
 	public static class PingEntry {
 
 		public final String status;
