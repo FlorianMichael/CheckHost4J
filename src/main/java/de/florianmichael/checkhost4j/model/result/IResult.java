@@ -17,23 +17,8 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
-public class HTTPResult implements IResult {
+public interface IResult {
 
-	public final double ping;
-	public final String status;
-	public final int errorCode;
-	public final String address;
-
-	public HTTPResult(double ping, String status, int errorCode, String address) {
-		this.ping = ping;
-		this.status = status;
-		this.errorCode = errorCode;
-		this.address = address;
-	}
-
-	@Override
-	public boolean isSuccessful() {
-		return status != null && status.equalsIgnoreCase("OK");
-	}
+    boolean isSuccessful();
 
 }

@@ -19,7 +19,7 @@ package de.florianmichael.checkhost4j.model.result;
 
 import java.util.List;
 
-public class PingResult {
+public class PingResult implements IResult {
 
 	public final List<PingEntry> pingEntries;
 
@@ -51,7 +51,8 @@ public class PingResult {
 		return pingEntries.size();
 	}
 
-	public boolean hasEntries() {
+	@Override
+	public boolean isSuccessful() {
 		return !pingEntries.isEmpty();
 	}
 

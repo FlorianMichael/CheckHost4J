@@ -19,7 +19,7 @@ package de.florianmichael.checkhost4j.model.result;
 
 import java.util.Map;
 
-public class DNSResult {
+public class DNSResult implements IResult {
 
 	public final int ttl;
 	public final Map<String, String[]> result;
@@ -29,6 +29,7 @@ public class DNSResult {
 		this.result = result;
 	}
 
+	@Override
 	public boolean isSuccessful() {
 		return ttl >= 0;
 	}

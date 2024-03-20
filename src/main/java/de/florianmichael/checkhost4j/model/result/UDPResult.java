@@ -17,7 +17,7 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
-public class UDPResult {
+public class UDPResult implements IResult {
 
 	public final double timeout;
 	public final double ping;
@@ -31,6 +31,7 @@ public class UDPResult {
 		this.error = error;
 	}
 
+	@Override
 	public boolean isSuccessful() {
 		return error == null;
 	}

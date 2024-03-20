@@ -17,7 +17,7 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
-public class TCPResult {
+public class TCPResult implements IResult {
 
 	public final double ping;
 	public final String address;
@@ -29,6 +29,7 @@ public class TCPResult {
 		this.error = error;
 	}
 
+	@Override
 	public boolean isSuccessful() {
 		return error == null;
 	}
