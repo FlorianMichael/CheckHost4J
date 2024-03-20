@@ -27,10 +27,6 @@ public class PingResult {
 		this.pingEntries = pingEntries;
 	}
 
-	public boolean isSuccessful() {
-		return pingEntries != null && !pingEntries.isEmpty();
-	}
-
 	public double getLowestPing() {
 		return pingEntries.stream().mapToDouble(entry -> entry.ping).min().orElse(-1);
 	}
@@ -55,6 +51,10 @@ public class PingResult {
 		return pingEntries.size();
 	}
 
+	public boolean hasEntries() {
+		return !pingEntries.isEmpty();
+	}
+
 	public static class PingEntry {
 
 		public final String status;
@@ -68,7 +68,7 @@ public class PingResult {
 		}
 
 		public boolean isSuccessful() {
-			return (status != null && status.equalsIgnoreCase("OK")) && ping >= 0;
+			return status != null && status.equalsIgnoreCase("OK") && ping >= 0;
 		}
 	}
 
