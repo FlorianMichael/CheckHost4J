@@ -112,32 +112,33 @@ public class CheckHost4J {
      * @throws Throwable If an error occurs
      */
     public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
-        final String response = requester.get(Constants.getServers(type.identifier(), host, maxNodes));
+        final String output = requester.get(Constants.getServers(type.identifier(), host, maxNodes));
+        final JsonObject response = Constants.GSON.fromJson(output, JsonObject.class);
 
-        final JsonObject main = Constants.GSON.fromJson(response, JsonObject.class);
-        if (!main.has("nodes")) {
-            throw new IOException("Response doesn't contain nodes");
+        if (!response.has("nodes") || !response.get("nodes").isJsonObject()) {
+            throw new IOException("Response doesn't contain nodes object");
         }
+        final JsonObject nodes = response.get("nodes").getAsJsonObject();
 
         final List<ServerNode> servers = new ArrayList<>();
-        for (Map.Entry<String, JsonElement> entry : main.get("nodes").getAsJsonObject().entrySet()) {
-            final JsonArray details = entry.getValue().getAsJsonArray();
-            if (details.size() != 5) {
-                throw new IOException("Server details are bigger than expected: " + details.size());
+        for (Map.Entry<String, JsonElement> entry : nodes.entrySet()) {
+            final JsonArray node = entry.getValue().getAsJsonArray();
+            if (node.size() != 5) {
+                throw new IOException("Server node is bigger than expected: " + node.size());
             }
 
             servers.add(new ServerNode(
                     entry.getKey(), // Node name
 
-                    details.get(0).getAsString(), // Country code
-                    details.get(1).getAsString(), // Country name
-                    details.get(2).getAsString(), // City
-                    details.get(3).getAsString(), // IP
-                    details.get(4).getAsString() // AS Name
+                    node.get(0).getAsString(), // Country code
+                    node.get(1).getAsString(), // Country name
+                    node.get(2).getAsString(), // City
+                    node.get(3).getAsString(), // IP
+                    node.get(4).getAsString() // AS Name
             ));
         }
 
-        return new Pair<>(main.get("request_id").getAsString(), servers);
+        return new Pair<>(response.get("request_id").getAsString(), servers);
     }
 
 }
