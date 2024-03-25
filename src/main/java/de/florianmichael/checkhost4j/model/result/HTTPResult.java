@@ -58,7 +58,7 @@ public class HTTPResult extends Result {
 
 	@Override
 	public boolean isSuccessful() {
-		return status != null && status.equalsIgnoreCase("OK");
+		return statusCode == 1;
 	}
 
 }
