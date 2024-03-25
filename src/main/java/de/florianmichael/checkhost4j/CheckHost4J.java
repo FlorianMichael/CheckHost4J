@@ -111,7 +111,7 @@ public class CheckHost4J {
      * @return A pair of the request ID and a list of nodes
      * @throws Throwable If an error occurs
      */
-    private Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
+    public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
         final String response = requester.get(Constants.getServers(type.identifier(), host, maxNodes));
 
         final JsonObject main = Constants.GSON.fromJson(response, JsonObject.class);
