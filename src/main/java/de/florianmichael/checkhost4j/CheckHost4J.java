@@ -116,8 +116,7 @@ public class CheckHost4J {
      * @throws Throwable If an error occurs (e.g. invalid response)
      */
     public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
-        final String output = requester.get(Constants.getServers(type.identifier(), host, maxNodes));
-        final JsonObject response = Constants.GSON.fromJson(output, JsonObject.class);
+        final JsonObject response = Constants.getServers(requester, type.identifier(), host, maxNodes);
 
         if (!response.has("nodes") || !response.get("nodes").isJsonObject()) {
             throw new IllegalStateException("Response doesn't contain nodes object");
