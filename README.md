@@ -55,7 +55,15 @@ After you got the `ResultNode<T>` you can use the `tickResults()` to update the 
 pingResult.tickResults();
 
 final Map<ServerNode, PingResult> results = pingResult.getResults();
-// All results which are not finished yet will be null
+results.forEach((serverNode, result) -> {
+    if (result == null) { // All results which are not finished yet will be null
+        System.out.println(serverNode.name + " is still checking...");
+    } else if (result.getErrorMessage() != null) {
+        System.out.println(serverNode.name + " failed: " + result.getErrorMessage());
+    } else {
+        System.out.println(serverNode.name + " responded: " + result.getSuccessfulPings() + "/" + result.getTotalPings());
+    }
+});
 ```
 
 You can also get all the server nodes which are being checked by using the `getNodes()` method.
