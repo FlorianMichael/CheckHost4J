@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 public class ServerNode {
+    public static final int EXPECTED_SIZE = 5;
 
     public final String name;
     public final String countryCode;
@@ -39,15 +40,15 @@ public class ServerNode {
     }
 
     /**
-     * Create a new {@link ServerNode} instance from the given data. The data must be a {@link JsonArray} with 5 elements.
+     * Create a new {@link ServerNode} instance from the given data. The data must be a {@link JsonArray} with {@link #EXPECTED_SIZE} elements.
      *
      * @param name The name of the server
      * @param data The data array
      * @return The new {@link ServerNode} instance
      */
     public static ServerNode of(final String name, final JsonArray data) {
-        if (data.size() != 5) {
-            throw new IllegalStateException("Expected 5 elements, got: " + data.size());
+        if (data.size() != EXPECTED_SIZE) {
+            throw new IllegalStateException("Expected " + EXPECTED_SIZE + " elements, got: " + data.size());
         }
         for (JsonElement element : data) {
             if (!element.isJsonPrimitive()) {
