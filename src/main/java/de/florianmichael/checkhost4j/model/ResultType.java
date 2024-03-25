@@ -21,8 +21,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.model.result.*;
-import de.florianmichael.checkhost4j.request.IRequester;
-import de.florianmichael.checkhost4j.util.CHRequests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +30,8 @@ import java.util.Map;
 @SuppressWarnings("rawtypes")
 public enum ResultType {
 
-    PING("ping", "Ping", (CheckResult<PingResult>) (requestId, requester, nodes) -> {
+    PING("ping", "Ping", (CheckResult<PingResult>) (response, nodes) -> {
         final Map<ServerNode, PingResult> result = new HashMap<>();
-        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -74,9 +71,8 @@ public enum ResultType {
 
         return result;
     }),
-    HTTP("http", "HTTP", (CheckResult<HTTPResult>) (requestId, requester, nodes) -> {
+    HTTP("http", "HTTP", (CheckResult<HTTPResult>) (response, nodes) -> {
         final Map<ServerNode, HTTPResult> result = new HashMap<>();
-        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -99,9 +95,8 @@ public enum ResultType {
 
         return result;
     }),
-    TCP("tcp", "TCP port", (CheckResult<TCPResult>) (requestId, requester, nodes) -> {
+    TCP("tcp", "TCP port", (CheckResult<TCPResult>) (response, nodes) -> {
         final Map<ServerNode, TCPResult> result = new HashMap<>();
-        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -126,9 +121,8 @@ public enum ResultType {
 
         return result;
     }),
-    UDP("udp", "UDP port", (CheckResult<UDPResult>) (requestId, requester, nodes) -> {
+    UDP("udp", "UDP port", (CheckResult<UDPResult>) (response, nodes) -> {
         final Map<ServerNode, UDPResult> result = new HashMap<>();
-        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -155,10 +149,8 @@ public enum ResultType {
 
         return result;
     }),
-    DNS("dns", "DNS", (CheckResult<DNSResult>) (requestId, requester, nodes) -> {
+    DNS("dns", "DNS", (CheckResult<DNSResult>) (response, nodes) -> {
         final Map<ServerNode, DNSResult> result = new HashMap<>();
-        final JsonObject response = CHRequests.checkResult(requester, requestId);
-
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
             if (response.get(node.name).isJsonNull()) continue;
@@ -222,12 +214,11 @@ public enum ResultType {
     public interface CheckResult<T> {
 
         /**
-         * @param requestId The request ID from the previous request
-         * @param requester The requester used to send API Requests
-         * @param nodes     The list of all server nodes
+         * @param response The response from the check-result API request
+         * @param nodes    The list of all server nodes
          * @return All server nodes and their ping results
          */
-        Map<ServerNode, T> perform(final String requestId, final IRequester requester, final List<ServerNode> nodes) throws Throwable;
+        Map<ServerNode, T> perform(final JsonObject response, final List<ServerNode> nodes) throws Throwable;
     }
 
 }

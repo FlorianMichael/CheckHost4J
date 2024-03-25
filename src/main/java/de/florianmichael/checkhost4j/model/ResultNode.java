@@ -17,7 +17,9 @@
 
 package de.florianmichael.checkhost4j.model;
 
+import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.request.IRequester;
+import de.florianmichael.checkhost4j.util.CHRequests;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +57,8 @@ public class ResultNode<T> {
      */
     @SuppressWarnings("unchecked")
     public void tickResults() throws Throwable {
-        results = type.checkResult().perform(requestId, requester, nodes);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
+        results = type.checkResult().perform(response, nodes);
     }
 
     /**
