@@ -34,6 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The main class to interact with the CheckHost4J API. You can either use {@link #getServers(ResultType, String, int)} to get a list of servers
+ * and create the {@link ResultNode} yourself or use the convenience methods {@link #ping(String, int)}, {@link #http(String, int)}, {@link #tcpPort(String, int)},
+ * {@link #udpPort(String, int)} and {@link #dns(String, int)} to get a {@link ResultNode} with the results.
+ */
 public class CheckHost4J {
 
     public static final CheckHost4J INSTANCE = new CheckHost4J(JavaRequester.INSTANCE);

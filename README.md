@@ -17,7 +17,7 @@ If you just want the latest jar file you can download it from the GitHub [Action
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your
 class path
 
-## Example usage
+## API Terminology
 The API main class is `CheckHost4J`, it contains all the methods to interact with the API.
 
 ```java
