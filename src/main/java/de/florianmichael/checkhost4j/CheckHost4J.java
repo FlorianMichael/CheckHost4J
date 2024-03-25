@@ -127,9 +127,6 @@ public class CheckHost4J {
         final List<ServerNode> servers = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : nodes.entrySet()) {
             final JsonArray node = entry.getValue().getAsJsonArray();
-            if (node.size() != 5) {
-                throw new IllegalStateException("Server node is bigger than expected: " + node.size());
-            }
             servers.add(ServerNode.of(entry.getKey(), node));
         }
 
