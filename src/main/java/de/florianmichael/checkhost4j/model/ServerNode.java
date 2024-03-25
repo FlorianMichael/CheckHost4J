@@ -54,6 +54,8 @@ public class ServerNode {
                 throw new IllegalStateException("Expected a primitive element, got: " + element);
             }
         }
+
+        // Dirty, but the api doesn't use json objects, so we can't use automatic deserialization here
         return new ServerNode(name, data.get(0).getAsString(), data.get(1).getAsString(), data.get(2).getAsString(), data.get(3).getAsString(), data.get(4).getAsString());
     }
 
