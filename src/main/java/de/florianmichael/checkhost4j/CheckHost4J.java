@@ -116,12 +116,15 @@ public class CheckHost4J {
 
         final JsonObject main = Constants.GSON.fromJson(response, JsonObject.class);
         if (!main.has("nodes")) {
-            throw new IOException("Invalid response!");
+            throw new IOException("Response doesn't contain nodes");
         }
 
         final List<ServerNode> servers = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : main.get("nodes").getAsJsonObject().entrySet()) {
             final JsonArray details = entry.getValue().getAsJsonArray();
+            if (details.size() != 5) {
+                throw new IOException("Server details are bigger than expected: " + details.size());
+            }
 
             servers.add(new ServerNode(
                     entry.getKey(), // Node name
