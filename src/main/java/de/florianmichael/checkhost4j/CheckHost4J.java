@@ -29,7 +29,6 @@ import de.florianmichael.checkhost4j.request.JavaRequester;
 import de.florianmichael.checkhost4j.util.Constants;
 import de.florianmichael.checkhost4j.util.Pair;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,14 +113,14 @@ public class CheckHost4J {
      * @param host     The host to check (e.g. google.com)
      * @param maxNodes The maximum amount of nodes to use
      * @return A pair of the request ID and a list of nodes
-     * @throws Throwable If an error occurs
+     * @throws Throwable If an error occurs (e.g. invalid response)
      */
     public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
         final String output = requester.get(Constants.getServers(type.identifier(), host, maxNodes));
         final JsonObject response = Constants.GSON.fromJson(output, JsonObject.class);
 
         if (!response.has("nodes") || !response.get("nodes").isJsonObject()) {
-            throw new IOException("Response doesn't contain nodes object");
+            throw new IllegalStateException("Response doesn't contain nodes object");
         }
         final JsonObject nodes = response.get("nodes").getAsJsonObject();
 
@@ -129,7 +128,7 @@ public class CheckHost4J {
         for (Map.Entry<String, JsonElement> entry : nodes.entrySet()) {
             final JsonArray node = entry.getValue().getAsJsonArray();
             if (node.size() != 5) {
-                throw new IOException("Server node is bigger than expected: " + node.size());
+                throw new IllegalStateException("Server node is bigger than expected: " + node.size());
             }
             servers.add(ServerNode.of(entry.getKey(), node));
         }
