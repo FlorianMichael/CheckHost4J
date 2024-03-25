@@ -131,16 +131,7 @@ public class CheckHost4J {
             if (node.size() != 5) {
                 throw new IOException("Server node is bigger than expected: " + node.size());
             }
-
-            servers.add(new ServerNode(
-                    entry.getKey(), // Node name
-
-                    node.get(0).getAsString(), // Country code
-                    node.get(1).getAsString(), // Country name
-                    node.get(2).getAsString(), // City
-                    node.get(3).getAsString(), // IP
-                    node.get(4).getAsString() // AS Name
-            ));
+            servers.add(ServerNode.of(entry.getKey(), node));
         }
 
         return new Pair<>(response.get("request_id").getAsString(), servers);
