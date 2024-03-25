@@ -17,8 +17,16 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
+/**
+ * Base interface to share common methods for results
+ */
 public interface IResult {
 
+    /**
+     * Indicates if the result was successful or not (e.g. HTTP status code 200) or (e.g. DNS TTL >= 0)
+     *
+     * @return True if the result was successful, false otherwise
+     */
     boolean isSuccessful();
 
 }
