@@ -101,7 +101,7 @@ public class PingResult extends Result {
 
     @Override
     public boolean isSuccessful() {
-        return !pingEntries.isEmpty();
+        return getFailedPings() == 0;
     }
 
     public static class PingEntry {
