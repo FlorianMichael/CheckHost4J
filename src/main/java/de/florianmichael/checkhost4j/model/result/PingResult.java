@@ -78,7 +78,7 @@ public class PingResult extends Result {
     }
 
     /**
-     * Get the number of successful pings (status OK and ping >= 0)
+     * Get the number of successful pings (status OK and ping higher/equal 0)
      *
      * @return the number of successful pings
      */
@@ -87,7 +87,7 @@ public class PingResult extends Result {
     }
 
     /**
-     * Get the number of failed pings (status not OK or ping < 0)
+     * Get the number of failed pings (status not OK or ping lower 0)
      *
      * @return the number of failed pings
      */

@@ -25,12 +25,17 @@ public abstract class Result {
     private String errorMessage = null;
 
     /**
-     * Indicates if the result was successful or not (e.g. HTTP status code 200) or (e.g. DNS TTL >= 0)
+     * Indicates if the result was successful or not (e.g. HTTP status code 200)
      *
      * @return True if the result was successful, false otherwise
      */
     public abstract boolean isSuccessful();
 
+    /**
+     * Get the error message if the result was not successful
+     *
+     * @return The error message or null
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
