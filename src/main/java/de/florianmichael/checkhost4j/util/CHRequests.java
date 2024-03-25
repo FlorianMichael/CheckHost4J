@@ -27,7 +27,7 @@ import java.net.URLEncoder;
 /**
  * Wrapper class file for API requests, methods here will return raw JSON data. Do not use, see {@link de.florianmichael.checkhost4j.CheckHost4J} for convenience methods.
  */
-public class Constants {
+public class CHRequests {
 
     public static final Gson GSON = new Gson();
 

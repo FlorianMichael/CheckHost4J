@@ -22,7 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.model.result.*;
 import de.florianmichael.checkhost4j.request.IRequester;
-import de.florianmichael.checkhost4j.util.Constants;
+import de.florianmichael.checkhost4j.util.CHRequests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public enum ResultType {
 
     PING("ping", "Ping", (CheckResult<PingResult>) (requestId, requester, nodes) -> {
         final Map<ServerNode, PingResult> result = new HashMap<>();
-        final JsonObject response = Constants.checkResult(requester, requestId);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -76,7 +76,7 @@ public enum ResultType {
     }),
     HTTP("http", "HTTP", (CheckResult<HTTPResult>) (requestId, requester, nodes) -> {
         final Map<ServerNode, HTTPResult> result = new HashMap<>();
-        final JsonObject response = Constants.checkResult(requester, requestId);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -101,7 +101,7 @@ public enum ResultType {
     }),
     TCP("tcp", "TCP port", (CheckResult<TCPResult>) (requestId, requester, nodes) -> {
         final Map<ServerNode, TCPResult> result = new HashMap<>();
-        final JsonObject response = Constants.checkResult(requester, requestId);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -128,7 +128,7 @@ public enum ResultType {
     }),
     UDP("udp", "UDP port", (CheckResult<UDPResult>) (requestId, requester, nodes) -> {
         final Map<ServerNode, UDPResult> result = new HashMap<>();
-        final JsonObject response = Constants.checkResult(requester, requestId);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;
@@ -157,7 +157,7 @@ public enum ResultType {
     }),
     DNS("dns", "DNS", (CheckResult<DNSResult>) (requestId, requester, nodes) -> {
         final Map<ServerNode, DNSResult> result = new HashMap<>();
-        final JsonObject response = Constants.checkResult(requester, requestId);
+        final JsonObject response = CHRequests.checkResult(requester, requestId);
 
         for (ServerNode node : nodes) {
             if (!response.has(node.name)) continue;

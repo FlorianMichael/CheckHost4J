@@ -26,7 +26,7 @@ import de.florianmichael.checkhost4j.model.ResultType;
 import de.florianmichael.checkhost4j.model.result.*;
 import de.florianmichael.checkhost4j.request.IRequester;
 import de.florianmichael.checkhost4j.request.JavaRequester;
-import de.florianmichael.checkhost4j.util.Constants;
+import de.florianmichael.checkhost4j.util.CHRequests;
 import de.florianmichael.checkhost4j.util.Pair;
 
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public class CheckHost4J {
      * @throws Throwable If an error occurs (e.g. invalid response)
      */
     public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
-        final JsonObject response = Constants.getServers(requester, type.identifier(), host, maxNodes);
+        final JsonObject response = CHRequests.getServers(requester, type.identifier(), host, maxNodes);
 
         if (!response.has("nodes") || !response.get("nodes").isJsonObject()) {
             throw new IllegalStateException("Response doesn't contain nodes object");
