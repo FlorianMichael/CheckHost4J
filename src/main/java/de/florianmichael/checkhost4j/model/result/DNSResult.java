@@ -19,6 +19,9 @@ package de.florianmichael.checkhost4j.model.result;
 
 import java.util.Map;
 
+/**
+ * Wrapper class file for DNS results, see <a href="https://check-host.net/about/api">CheckHost API specification</a> for more information
+ */
 public class DNSResult implements IResult {
 
 	public final int ttl;
