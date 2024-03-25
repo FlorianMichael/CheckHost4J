@@ -37,7 +37,7 @@ public class JsonParser {
 
     public static void checkPrimitives(final JsonArray array) throws IllegalStateException {
         for (JsonElement element : array) {
-            if (!element.isJsonPrimitive()) {
+            if (!element.isJsonPrimitive() && !element.isJsonNull()) {
                 throw new IllegalStateException("Expected a primitive element, got: " + element);
             }
         }
