@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static de.florianmichael.checkhost4j.util.JsonParser.*;
+
 /**
  * The main class to interact with the CheckHost4J API. You can either use {@link #getServers(ResultType, String, int)} to get a list of servers
  * and create the {@link ResultNode} yourself or use the convenience methods {@link #ping(String, int)}, {@link #http(String, int)}, {@link #tcpPort(String, int)},
@@ -118,10 +120,7 @@ public class CheckHost4J {
     public Pair<String, List<ServerNode>> getServers(final ResultType type, final String host, final int maxNodes) throws Throwable {
         final JsonObject response = CHRequests.getServers(requester, type.identifier(), host, maxNodes);
 
-        if (!response.has("nodes") || !response.get("nodes").isJsonObject()) {
-            throw new IllegalStateException("Response doesn't contain nodes object");
-        }
-        final JsonObject nodes = response.get("nodes").getAsJsonObject();
+        final JsonObject nodes = getObject(response, "nodes");
 
         final List<ServerNode> servers = new ArrayList<>();
         for (Map.Entry<String, JsonElement> entry : nodes.entrySet()) {

@@ -17,17 +17,37 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import de.florianmichael.checkhost4j.model.Result;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static de.florianmichael.checkhost4j.util.JsonParser.*;
 
 /**
  * Wrapper class file for DNS results, see <a href="https://check-host.net/about/api">CheckHost API specification</a> for more information
  */
-public class PingResult implements IResult {
+public class PingResult extends Result {
+
+    public static final PingResult FAILED = new PingResult(Collections.singletonList(PingEntry.FAILED));
 
     public final List<PingEntry> pingEntries;
 
-    public PingResult(List<PingEntry> pingEntries) {
+    private PingResult(List<PingEntry> pingEntries) {
         this.pingEntries = pingEntries;
+    }
+
+    public static PingResult of(final JsonArray data) {
+        final List<PingEntry> entries = new ArrayList<>();
+        for (JsonElement element : data) {
+            if (element.isJsonArray()) {
+                entries.add(PingEntry.of(element.getAsJsonArray()));
+            }
+        }
+        return new PingResult(entries);
     }
 
     /**
@@ -86,14 +106,21 @@ public class PingResult implements IResult {
 
     public static class PingEntry {
 
+        public static final PingEntry FAILED = new PingEntry("Unable to resolve domain name.", -1, null);
+
         public final String status;
         public final double ping;
         public final String address;
 
-        public PingEntry(String status, double ping, String address) {
+        private PingEntry(String status, double ping, String address) {
             this.status = status;
             this.ping = ping;
             this.address = address;
+        }
+
+        public static PingEntry of(final JsonArray data) {
+            checkPrimitives(data);
+            return new PingEntry(data.get(0).getAsString(), getDouble(data.get(1)), getOptString(data, 2));
         }
 
         public boolean isSuccessful() {

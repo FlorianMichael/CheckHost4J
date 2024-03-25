@@ -17,181 +17,31 @@
 
 package de.florianmichael.checkhost4j.model;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.model.result.*;
+import de.florianmichael.checkhost4j.util.TFunction;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.function.Supplier;
 
 @SuppressWarnings("rawtypes")
 public enum ResultType {
 
-    PING("ping", "Ping", (CheckResult<PingResult>) (response, nodes) -> {
-        final Map<ServerNode, PingResult> result = new HashMap<>();
-
-        for (ServerNode node : nodes) {
-            if (!response.has(node.name)) continue;
-            if (response.get(node.name).isJsonNull()) continue;
-
-            final JsonArray array = response.get(node.name).getAsJsonArray();
-            for (JsonElement element : array) {
-                if (element.isJsonArray()) {
-                    final JsonArray pingEntries = element.getAsJsonArray();
-                    final List<PingResult.PingEntry> resultEntries = new ArrayList<>();
-
-                    for (JsonElement pingEntry : pingEntries) {
-                        if (!pingEntry.isJsonArray()) continue;
-
-                        final JsonArray pingEntryData = pingEntry.getAsJsonArray();
-                        if (pingEntryData.size() != 2 && pingEntryData.size() != 3) {
-                            resultEntries.add(new PingResult.PingEntry("Unable to resolve domain name.", -1, null));
-                            continue;
-                        }
-
-                        String address = null;
-                        if (pingEntryData.size() > 2) {
-                            address = pingEntryData.get(2).getAsString();
-                        }
-
-                        resultEntries.add(new PingResult.PingEntry(
-                                pingEntryData.get(0).getAsString(), // status
-                                pingEntryData.get(1).getAsDouble(), // ping
-                                address
-                        ));
-                    }
-
-                    result.put(node, new PingResult(resultEntries));
-                }
-            }
-        }
-
-        return result;
-    }),
-    HTTP("http", "HTTP", (CheckResult<HTTPResult>) (response, nodes) -> {
-        final Map<ServerNode, HTTPResult> result = new HashMap<>();
-
-        for (ServerNode node : nodes) {
-            if (!response.has(node.name)) continue;
-            if (response.get(node.name).isJsonNull()) continue;
-
-            final JsonArray resultArray = response.get(node.name).getAsJsonArray();
-            if (resultArray.size() != 1) {
-                continue;
-            }
-            final JsonArray data = resultArray.get(0).getAsJsonArray();
-
-            final double ping = data.get(1).getAsDouble();
-            final String status = data.get(2).getAsString();
-            final int error = data.size() > 3 && data.get(3).isJsonPrimitive() ? data.get(3).getAsInt() : -1;
-            if (error == -1) continue;
-            final String address = data.size() > 4 && data.get(4).isJsonPrimitive() ? data.get(4).getAsString() : null;
-
-            result.put(node, new HTTPResult(ping, status, error, address));
-        }
-
-        return result;
-    }),
-    TCP("tcp", "TCP port", (CheckResult<TCPResult>) (response, nodes) -> {
-        final Map<ServerNode, TCPResult> result = new HashMap<>();
-
-        for (ServerNode node : nodes) {
-            if (!response.has(node.name)) continue;
-            if (response.get(node.name).isJsonNull()) continue;
-
-            final JsonArray resultArray = response.get(node.name).getAsJsonArray();
-            if (resultArray.size() != 1) {
-                continue;
-            }
-
-            final JsonObject data = resultArray.get(0).getAsJsonObject();
-            double ping = 0;
-            String address = null;
-            String error = null;
-
-            if (data.has("time")) ping = data.get("time").getAsDouble();
-            if (data.has("address")) address = data.get("address").getAsString();
-            if (data.has("error")) error = data.get("error").getAsString();
-
-            result.put(node, new TCPResult(ping, address, error));
-        }
-
-        return result;
-    }),
-    UDP("udp", "UDP port", (CheckResult<UDPResult>) (response, nodes) -> {
-        final Map<ServerNode, UDPResult> result = new HashMap<>();
-
-        for (ServerNode node : nodes) {
-            if (!response.has(node.name)) continue;
-            if (response.get(node.name).isJsonNull()) continue;
-
-            final JsonArray resultArray = response.get(node.name).getAsJsonArray();
-            if (resultArray.size() != 1) {
-                continue;
-            }
-
-            final JsonObject data = resultArray.get(0).getAsJsonObject();
-            double timeout = 0;
-            double ping = 0;
-            String address = null;
-            String error = null;
-
-            if (data.has("timeout")) timeout = data.get("timeout").getAsDouble();
-            if (data.has("time")) ping = data.get("time").getAsDouble();
-            if (data.has("address")) address = data.get("address").getAsString();
-            if (data.has("error")) error = data.get("error").getAsString();
-
-            result.put(node, new UDPResult(timeout, ping, address, error));
-        }
-
-        return result;
-    }),
-    DNS("dns", "DNS", (CheckResult<DNSResult>) (response, nodes) -> {
-        final Map<ServerNode, DNSResult> result = new HashMap<>();
-        for (ServerNode node : nodes) {
-            if (!response.has(node.name)) continue;
-            if (response.get(node.name).isJsonNull()) continue;
-
-            final JsonArray resultArray = response.get(node.name).getAsJsonArray();
-            if (resultArray.size() != 1) {
-                continue;
-            }
-
-            final JsonObject data = resultArray.get(0).getAsJsonObject();
-
-            final Map<String, String[]> domains = new HashMap<>();
-            for (Map.Entry<String, JsonElement> entry : data.entrySet()) {
-                if (entry.getKey().equals("TTL") || !entry.getValue().isJsonArray()) {
-                    continue;
-                }
-
-                final JsonArray endpointJson = entry.getValue().getAsJsonArray();
-
-                final String[] endpoints = new String[endpointJson.size()];
-                for (int k = 0; k < endpointJson.size(); k++) {
-                    if (endpointJson.get(k).isJsonPrimitive()) {
-                        endpoints[k] = endpointJson.get(k).getAsString();
-                    }
-                }
-                domains.put(entry.getKey(), endpoints);
-            }
-            result.put(node, new DNSResult(data.has("TTL") && data.get("TTL").isJsonPrimitive() ? data.get("TTL").getAsInt() : -1, domains));
-        }
-
-        return result;
-    });
+    PING("ping", "Ping", response -> PingResult.of(response.getAsJsonArray()), () -> PingResult.FAILED),
+    HTTP("http", "HTTP", response -> HTTPResult.of(response.getAsJsonArray()), () -> HTTPResult.FAILED),
+    TCP("tcp", "TCP port", response -> TCPResult.of(response.getAsJsonObject()), () -> TCPResult.FAILED),
+    UDP("udp", "UDP port", response -> UDPResult.of(response.getAsJsonObject()), () -> UDPResult.FAILED),
+    DNS("dns", "DNS", response -> DNSResult.of(response.getAsJsonObject()), () -> DNSResult.FAILED);
 
     private final String identifier;
     private final String displayName;
-    private final CheckResult checkResult;
+    private final TFunction<JsonElement, Result> jsonToResult;
+    private final Supplier<Result> failed;
 
-    ResultType(final String identifier, final String displayName, final CheckResult checkResult) {
+    ResultType(String identifier, String displayName, TFunction<JsonElement, Result> jsonToResult, Supplier<Result> failed) {
         this.identifier = identifier;
         this.displayName = displayName;
-        this.checkResult = checkResult;
+        this.jsonToResult = jsonToResult;
+        this.failed = failed;
     }
 
     /**
@@ -212,23 +62,19 @@ public enum ResultType {
         return displayName;
     }
 
-    public CheckResult checkResult() {
-        return checkResult;
-    }
-
     /**
-     * Performs the check-result API request for the result
+     * Convert the JSON response to a result object of this type or the failed object if the response is null
      *
-     * @param <T> The result type
+     * @param response The JSON response
+     * @return The result object
+     * @throws Exception If the conversion fails
      */
-    public interface CheckResult<T> {
-
-        /**
-         * @param response The response from the check-result API request
-         * @param nodes    The list of all server nodes
-         * @return All server nodes and their ping results
-         */
-        Map<ServerNode, T> perform(final JsonObject response, final List<ServerNode> nodes) throws Throwable;
+    public Result convert(final JsonElement response) throws Exception {
+        if (response == null) {
+            return failed.get(); // Ensure new instance for each call
+        } else {
+            return jsonToResult.apply(response);
+        }
     }
 
 }

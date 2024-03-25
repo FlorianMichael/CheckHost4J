@@ -15,22 +15,28 @@
  * limitations under the License.
  */
 
-package de.florianmichael.checkhost4j.request;
-
-import java.net.URI;
+package de.florianmichael.checkhost4j.model;
 
 /**
- * Interface for a requester
+ * Base class to share common methods for results
  */
-public interface IRequester {
+public abstract class Result {
+
+    private String errorMessage = null;
 
     /**
-     * Get the content of the given URI
+     * Indicates if the result was successful or not (e.g. HTTP status code 200) or (e.g. DNS TTL >= 0)
      *
-     * @param target URI to get
-     * @return Content of the URI
-     * @throws Exception If an error occurs
+     * @return True if the result was successful, false otherwise
      */
-    String get(final URI target) throws Exception;
+    public abstract boolean isSuccessful();
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
 }

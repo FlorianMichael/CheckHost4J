@@ -18,7 +18,8 @@
 package de.florianmichael.checkhost4j.model;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+
+import static de.florianmichael.checkhost4j.util.JsonParser.*;
 
 public class ServerNode {
     public static final int EXPECTED_SIZE = 5;
@@ -47,16 +48,10 @@ public class ServerNode {
      * @return The new {@link ServerNode} instance
      */
     public static ServerNode of(final String name, final JsonArray data) {
-        if (data.size() != EXPECTED_SIZE) {
-            throw new IllegalStateException("Expected " + EXPECTED_SIZE + " elements, got: " + data.size());
-        }
-        for (JsonElement element : data) {
-            if (!element.isJsonPrimitive()) {
-                throw new IllegalStateException("Expected a primitive element, got: " + element);
-            }
-        }
+        // Make sure the code below won't break unexpectedly
+        checkSize(data, EXPECTED_SIZE);
+        checkPrimitives(data);
 
-        // Dirty, but the api doesn't use json objects, so we can't use automatic deserialization here
         return new ServerNode(name, data.get(0).getAsString(), data.get(1).getAsString(), data.get(2).getAsString(), data.get(3).getAsString(), data.get(4).getAsString());
     }
 

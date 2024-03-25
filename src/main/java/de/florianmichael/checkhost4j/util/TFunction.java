@@ -15,18 +15,10 @@
  * limitations under the License.
  */
 
-package de.florianmichael.checkhost4j.model.result;
+package de.florianmichael.checkhost4j.util;
 
-/**
- * Base interface to share common methods for results
- */
-public interface IResult {
+public interface TFunction<K, V> {
 
-    /**
-     * Indicates if the result was successful or not (e.g. HTTP status code 200) or (e.g. DNS TTL >= 0)
-     *
-     * @return True if the result was successful, false otherwise
-     */
-    boolean isSuccessful();
+    V apply(K k) throws Exception;
 
 }

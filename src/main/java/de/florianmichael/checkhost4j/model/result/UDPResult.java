@@ -17,21 +17,32 @@
 
 package de.florianmichael.checkhost4j.model.result;
 
+import com.google.gson.JsonObject;
+import de.florianmichael.checkhost4j.model.Result;
+
+import static de.florianmichael.checkhost4j.util.JsonParser.*;
+
 /**
  * Wrapper class file for DNS results, see <a href="https://check-host.net/about/api">CheckHost API specification</a> for more information
  */
-public class UDPResult implements IResult {
+public class UDPResult extends Result {
+
+	public static final UDPResult FAILED = new UDPResult(-1, -1, null, null);
 
 	public final double timeout;
 	public final double ping;
 	public final String address;
 	public final String error;
 
-	public UDPResult(double timeout, double ping, String address, String error) {
+	private UDPResult(double timeout, double ping, String address, String error) {
 		this.timeout = timeout;
 		this.ping = ping;
 		this.address = address;
 		this.error = error;
+	}
+
+	public static UDPResult of(final JsonObject data) {
+		return new UDPResult(getOptDouble(data, "timeout", 0), getOptDouble(data, "ping", 0), getOptString(data, "address"), getOptString(data, "error"));
 	}
 
 	@Override

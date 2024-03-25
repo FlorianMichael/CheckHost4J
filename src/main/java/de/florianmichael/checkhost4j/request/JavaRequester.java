@@ -33,7 +33,7 @@ public class JavaRequester implements IRequester {
     }
 
     @Override
-    public String get(URI target) throws Throwable {
+    public String get(URI target) throws Exception {
         final HttpURLConnection connection = (HttpURLConnection) target.toURL().openConnection();
 
         connection.setRequestProperty("User-Agent", agent);

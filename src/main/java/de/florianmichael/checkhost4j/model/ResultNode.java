@@ -17,6 +17,8 @@
 
 package de.florianmichael.checkhost4j.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.florianmichael.checkhost4j.request.IRequester;
 import de.florianmichael.checkhost4j.util.CHRequests;
@@ -25,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ResultNode<T> {
+public class ResultNode<T extends Result> {
 
     private final IRequester requester;
 
@@ -33,7 +35,7 @@ public class ResultNode<T> {
     private final String requestId;
     private final List<ServerNode> nodes;
 
-    private Map<ServerNode, T> results;
+    private final Map<ServerNode, T> results;
 
     public ResultNode(IRequester requester, ResultType type, String requestId, List<ServerNode> nodes) {
         this.requester = requester;
@@ -56,9 +58,28 @@ public class ResultNode<T> {
      * result in the results map.
      */
     @SuppressWarnings("unchecked")
-    public void tickResults() throws Throwable {
+    public void tickResults() throws Exception {
         final JsonObject response = CHRequests.checkResult(requester, requestId);
-        results = type.checkResult().perform(response, nodes);
+        for (ServerNode node : nodes) {
+            if (!response.has(node.name) || !response.get(node.name).isJsonArray()) {
+                continue;
+            }
+            final JsonArray data = response.get(node.name).getAsJsonArray();
+            if (data.size() != 1 || !data.get(0).isJsonArray()) {
+                for (JsonElement element : data) {
+                    // Try to locate the error message in the response
+                    // then generate an empty response with the error message
+                    if (element.isJsonObject() && element.getAsJsonObject().has("message")) {
+                        final T emptyResponse = (T) type.convert(null);
+                        emptyResponse.setErrorMessage(element.getAsJsonObject().get("message").getAsString());
+
+                        results.put(node, emptyResponse);
+                    }
+                }
+                continue; // Error occurred or invalid data, skip this node
+            }
+            results.put(node, (T) type.convert(data.get(0)));
+        }
     }
 
     /**
