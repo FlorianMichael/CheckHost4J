@@ -194,10 +194,20 @@ public enum ResultType {
         this.checkResult = checkResult;
     }
 
+    /**
+     * Identifier for the official web API, only used for the API requests
+     *
+     * @return The identifier
+     */
     public String identifier() {
         return identifier;
     }
 
+    /**
+     * Proper display name for the result type, can be used for user interfaces
+     *
+     * @return The display name
+     */
     public String displayName() {
         return displayName;
     }
