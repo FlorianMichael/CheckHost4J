@@ -6,9 +6,8 @@ If you encounter any issues, please report them on the [issue tracker](https://g
 If you just want to talk or need help with CheckHost4J feel free to join my [Discord](https://discord.gg/BwWhCHUKDf).
 
 ## How to add this to your project
-
 ### Gradle/Maven
-To use CheckHost4J with Gradle/Maven you can use [Maven Central](https://mvnrepository.com/artifact/de.florianmichael/CheckHost4J), [Lenni0451's repository](https://maven.lenni0451.net/#/releases/de/florianmichael/CheckHost4J) or [Jitpack](https://jitpack.io/#FlorianMichael/CheckHost4J).  
+To use CheckHost4J with Gradle/Maven you can use [Maven Central](https://mvnrepository.com/artifact/de.florianmichael/CheckHost4J), [Lenni0451's Maven](https://maven.lenni0451.net/#/releases/de/florianmichael/CheckHost4J) or [Jitpack](https://jitpack.io/#FlorianMichael/CheckHost4J).  
 You can also find instructions how to implement it into your build script there.
 
 ### Jar File
