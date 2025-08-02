@@ -3,7 +3,7 @@ Java implementation of the check-host.net API
 
 ## Contact
 If you encounter any issues, please report them on the [issue tracker](https://github.com/FlorianMichael/CheckHost4J/issues).  
-If you just want to talk or need help with CheckHost4J feel free to join my [Discord](https://discord.gg/BwWhCHUKDf).
+If you just want to talk or need help with CheckHost4J feel free to join my [Discord](https://florianmichael.de/discord).
 
 ## How to add this to your project
 ### Gradle/Maven
